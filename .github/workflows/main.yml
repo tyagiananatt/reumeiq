@@ -1,0 +1,57 @@
+name: ResumeIQ CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # =========================
+      # FRONTEND
+      # =========================
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      # =========================
+      # BACKEND
+      # =========================
+
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
+
+      # =========================
+      # DOCKER CHECK
+      # =========================
+
+      - name: Build Docker Containers
+        run: docker compose build
