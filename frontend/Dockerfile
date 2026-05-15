@@ -28,7 +28,7 @@ FROM nginx:1.25-alpine AS production
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy custom nginx config for SPA routing
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Create non-root user for security
 RUN adduser -D -H -u 1001 nginxuser && \
